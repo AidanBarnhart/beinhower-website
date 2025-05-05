@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equation Solver, for Miss Beinhower</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #002D62 50%, #FFFFFF 50%);
+      color: #002D62;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #f0f0f0;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      width: 90%;
+    }
+
+    h1 {
+      color: #002D62;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #002D62;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #004494;
+    }
+
+    pre {
+      background-color: #e6e6e6;
+      padding: 15px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      text-align: left;
+      overflow-x: auto;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Equation Solver</h1>
+    <p>Enter any equation or problem below and click a button to solve. Examples:</p>
+    <ul style="text-align: left; margin-bottom: 20px;">
+      <li><code>2.5e3 + 4.2e2</code> (Scientific Notation)</li>
+      <li><code>sin(45 deg)</code> (Trigonometric Functions)</li>
+      <li><code>log(100)</code> (Logarithmic Functions)</li>
+      <li><code>2x + 4 = 10</code> (Algebraic Equations)</li>
+    </ul>
+    <input id="mathInput" type="text" placeholder="Enter your equation or problem here">
+    <button onclick="evaluateExpression()">Evaluate</button>
+    <button onclick="simplifyExpression()">Simplify</button>
+    <button onclick="solveEquation()">Solve for x</button>
+
+    <h2>Output:</h2>
+    <pre id="output">Results will appear here</pre>
+
+    <footer>
+
+    </footer>
+  </div>
+
+  <script>
+    function evaluateExpression() {
+      const input = document.getElementById('mathInput').value;
+      const output = document.getElementById('output');
+      try {
+        // Evaluate general mathematical expressions
+        const result = math.evaluate(input);
+        output.textContent = `Result: ${result}`;
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    function simplifyExpression() {
+      const input = document.getElementById('mathInput').value;
+      const output = document.getElementById('output');
+      try {
+        // Simplify algebraic expressions
+        const simplified = math.simplify(input);
+        output.textContent = `Simplified: ${simplified.toString()}`;
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    function solveEquation() {
+      const input = document.getElementById('mathInput').value;
+      const output = document.getElementById('output');
+      try {
+        // Check if input is a valid equation with an '=' sign
+        if (!input.includes('=')) {
+          throw new Error("The equation must include an '=' sign. Example: 2x + 4 = 10");
+        }
+
+        // Split into left-hand side (LHS) and right-hand side (RHS)
+        const [lhs, rhs] = input.split('=');
+
+        // Rearrange the equation so one side equals 0
+        const equation = `${lhs} - (${rhs})`;
+
+
+        const solutions = (equation, 'x');
+
+        // Display solutions
+        if (Array.isArray(solutions)) {
+          output.textContent = `Solution(s): ${solutions.map(s => `x = ${s}`).join(', ')}`;
+        } else {
+          output.textContent = `Solution: x = ${solutions}`;
+        }
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website with Favicon</title>
+  <!-- Link to the favicon -->
+  <link rel="icon" type="image/png" href="Miss Beinhower.png">
+  <!-- Alternative formats (optional) -->
+  <link rel="icon" type="image/svg+xml" href="Miss Beinhower.png">
+  <link rel="apple-touch-icon" href="Miss Beinhower.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #002D62 50%, #FFFFFF 50%);
+      color: #002D62;
+    }
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+</body>
+<script>
+    // Define math.solve as a function
+    math.solve = function (equation, variable) {
+      try {
+        // Parse the equation
+        const parsedEquation = math.parse(equation);
+  
+        // Rearrange the equation to equal 0
+        const zeroEquation = math.simplify(`${parsedEquation} = 0`);
+  
+        // Solve for the specified variable
+        const solutions = math.algebra.solve(zeroEquation, variable);
+  
+        return solutions;
+      } catch (error) {
+        throw new Error(`Unable to solve the equation: ${error.message}`);
+      }
+    };
+  </script>
+</html>

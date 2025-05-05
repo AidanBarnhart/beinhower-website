@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Calculator</title>
+    <style>
+        /* Penn State Branding */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* White background */
+            color: #002D62; /* Penn State Blue */
+        }
+
+        header {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #F4F4F4; /* Light gray background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #0076A8; /* Penn State Light Blue */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005B82; /* Darker Blue on Hover */
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            background: #FFFFFF; /* White background */
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+        }
+
+        footer {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Penn State Statistics Calculator</h1>
+    </header>
+    <div class="container">
+        <label for="numbers">Enter a list of numbers (comma-separated):</label>
+        <input type="text" id="numbers" placeholder="e.g., 1, 2, 3, 4, 5">
+        <button onclick="calculateStatistics()">Calculate Statistics</button>
+        <div class="results" id="results">
+            <h3>Results:</h3>
+            <p id="mean">Mean: </p>
+            <p id="median">Median: </p>
+            <p id="mode">Mode: </p>
+            <p id="stdDev">Standard Deviation: </p>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 Penn State Styled Calculator</p>
+    </footer>
+    <script>
+        function calculateStatistics() {
+            const input = document.getElementById('numbers').value;
+            const numbers = input.split(',').map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+
+            if (numbers.length === 0) {
+                alert("Please enter a valid list of numbers.");
+                return;
+            }
+
+            // Calculate Mean
+            const mean = numbers.reduce((a, b) => a + b, 0) / numbers.length;
+
+            // Calculate Median
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            const middle = Math.floor(sortedNumbers.length / 2);
+            const median = sortedNumbers.length % 2 === 0
+                ? (sortedNumbers[middle - 1] + sortedNumbers[middle]) / 2
+                : sortedNumbers[middle];
+
+            // Calculate Mode
+            const frequency = {};
+            numbers.forEach(num => frequency[num] = (frequency[num] || 0) + 1);
+            const maxFrequency = Math.max(...Object.values(frequency));
+            const mode = Object.keys(frequency).filter(num => frequency[num] === maxFrequency);
+
+            // Calculate Standard Deviation
+            const variance = numbers.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / numbers.length;
+            const stdDev = Math.sqrt(variance);
+
+            // Display Results
+            document.getElementById('mean').textContent = `Mean: ${mean.toFixed(2)}`;
+            document.getElementById('median').textContent = `Median: ${median}`;
+            document.getElementById('mode').textContent = `Mode: ${mode.join(', ')}`;
+            document.getElementById('stdDev').textContent = `Standard Deviation: ${stdDev.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

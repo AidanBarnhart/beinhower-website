@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Penn State Branding */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* White Background */
+            color: #002D62; /* Penn State Blue */
+        }
+
+        header {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #F4F4F4; /* Light Gray Background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #0076A8; /* Penn State Light Blue */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005B82; /* Darker Blue on Hover */
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Graphing Calculator</h1>
+    </header>
+    <div class="container">
+        <label for="equation">Enter an equation (e.g., y=x^2, y=2*x+3):</label>
+        <input type="text" id="equation" placeholder="y = ...">
+        <button onclick="plotGraph()">Graph Equation</button>
+        <canvas id="graphCanvas" width="800" height="400"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('graphCanvas').getContext('2d');
+        let chart;
+
+        function parseEquation(equation, xValue) {
+            try {
+                const sanitizedEquation = equation.replace("^", "**").replace(/y\s*=/, "").trim();
+                return eval(sanitizedEquation.replace(/x/g, `(${xValue})`));
+            } catch (error) {
+                alert("Invalid equation. Please use correct syntax (e.g., y=x^2).");
+                return null;
+            }
+        }
+
+        function plotGraph() {
+            const equationInput = document.getElementById('equation').value;
+
+            if (!equationInput.startsWith("y=")) {
+                alert("Please enter an equation in the form y=...");
+                return;
+            }
+
+            const xValues = [];
+            const yValues = [];
+
+            // Generate data points
+            for (let x = -10; x <= 10; x += 0.1) {
+                xValues.push(x);
+                const y = parseEquation(equationInput, x);
+                if (y !== null) {
+                    yValues.push(y);
+                }
+            }
+
+            // Destroy old chart if it exists
+            if (chart) {
+                chart.destroy();
+            }
+
+            // Create a new chart
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        label: 'Graph of ' + equationInput,
+                        data: yValues,
+                        borderColor: '#0076A8',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'X-Axis'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Y-Axis'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

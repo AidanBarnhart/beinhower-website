@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <style>
+        /* Penn State Branding */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* White background */
+            color: #002D62; /* Penn State Blue */
+        }
+
+        header {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+            background: #F4F4F4; /* Light gray background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calculator input[type="text"] {
+            grid-column: span 4;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: right;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+        }
+
+        .calculator button {
+            padding: 15px;
+            font-size: 1rem;
+            background-color: #0076A8; /* Penn State Light Blue */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .calculator button:hover {
+            background-color: #005B82; /* Darker Blue on Hover */
+        }
+
+        footer {
+            background-color: #002D62; /* Penn State Blue */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Scientific Calculator</h1>
+    </header>
+    <div class="container">
+        <div class="calculator">
+            <input type="text" id="display" readonly>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="appendValue('/')">÷</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('*')">×</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('-')">−</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="appendValue('%')">%</button>
+            <button onclick="appendValue('Math.sin(')">sin</button>
+            <button onclick="appendValue('Math.cos(')">cos</button>
+            <button onclick="appendValue('Math.tan(')">tan</button>
+            <button onclick="appendValue('Math.sqrt(')">√</button>
+            <button onclick="appendValue('Math.log(')">ln</button>
+            <button onclick="appendValue('Math.log10(')">log</button>
+            <button onclick="appendValue('Math.exp(')">eˣ</button>
+            <button onclick="appendValue('**')">^</button>
+        </div>
+    </div>
+
+    <script>
+        function appendValue(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculate() {
+            try {
+                const result = eval(document.getElementById('display').value);
+                document.getElementById('display').value = result;
+            } catch (error) {
+                alert('Invalid Expression');
+            }
+        }
+    </script>
+</body>
+</html>
